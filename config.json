@@ -12,6 +12,61 @@
 			"task_interval": 0,
 			"task_scheduled_time": "",
 			"task_scheduled": "false"
+		},
+		{
+			"task_name": 341,
+			"task_location": "C:\\Users\\myuser\\important_task.exe",
+			"task_interval": "0",
+			"task_scheduled_time": "",
+			"task_scheduled": "false",
+			"notes": "testing variable type casting and also that I'm ignoring this note"
+		},
+		{
+			"task_name": "",
+			"task_location": "C:\\Users\\myuser\\important_task.exe",
+			"task_interval": "",
+			"task_scheduled_time": "",
+			"task_scheduled": "false",
+			"notes": "testing blank value in task name"
+		},
+		{
+			"task_name": "Test Case",
+			"task_location": "C:\\Users\\myuser\\important_task.exe",
+			"task_interval": "",
+			"task_scheduled_time": "",
+			"task_scheduled": "false",
+			"notes": "testing blank value in task interval"
+		},
+		{
+			"task_location": "C:\\Users\\myuser\\important_task.exe",
+			"task_interval": "",
+			"task_scheduled_time": "",
+			"task_scheduled": "false",
+			"notes": "Missing task name"
+		},
+		{
+			"task_name": "Test Case",
+			"task_location": "C:\\Users\\myuser\\important_task.exe",
+			"task_interval": "five hundred",
+			"task_scheduled_time": "",
+			"task_scheduled": "false",
+			"notes": "Testing a non numeric task_interval value"
+		},
+		{
+			"task_name": "Test Case",
+			"task_location": "C:\\Users\\myuser\\important_task.exe",
+			"task_interval": 2143,
+			"task_scheduled_time": "",
+			"task_scheduled": "notfalse",
+			"notes": "Testing invalid true/false"
+		},
+		{
+			"task_name": "Test Case",
+			"task_location": "C:\\Users\\myuser\\important_task.exe",
+			"task_interval": 1234,
+			"task_scheduled_time": "",
+			"task_scheduled": "faLSE",
+			"notes": "Testing odd typecase true/false"
 		}
 	]
 }
