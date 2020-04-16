@@ -4,6 +4,7 @@
 import json
 import database
 import datetime as dt
+import pytz
 
 def read_config(filepath):
     # Parses a task scheduler config file. This assumes the config JSON file is structured
@@ -90,21 +91,90 @@ def read_config(filepath):
                     elif obj['task_scheduled'].lower() == 'false':
                         tmp['task_scheduled'] = False
                     else:
-                        print('Couldn''t find the key ''task_scheduled'' at iteration ' + str(count))
+                        raise ValueError()
                 elif type(obj['task_scheduled']) == bool:
                     tmp['task_scheduled'] = (obj['task_scheduled'])
                 else:
-                    print('Couldn''t find the key ''task_scheduled'' at iteration ' + str(count))
-            except KeyError:
+                    raise ValueError()
+            except ValueError:
                 print('Couldn''t find the key ''task_scheduled'' at iteration ' + str(count))
             
-            # Assign data to final config_list
-            config_list.append(tmp)
+            # Assign data to final config_list if it has 5 fields (having an issue with
+            # tmp being appended even though exceptions should remove it, specifically at
+            # task_scheduled checkpoint)
+            if len(tmp) == 5:
+                config_list.append(tmp)
             
             # Increment counter
             count = count + 1
     
     return config_list
+
+def get_jobs_to_run(config_list):
+    # Given a list of job configurations, identify which ones need to be run based on the
+    # scheduled time provided in the configuration. It is assumed that this scheduler runs
+    # once a minute, so only jobs with expected start times within one minute of now are
+    # kicked off.
+    
+    # Initialize variables
+    utcTz = pytz.timezone("UTC") # Always use UTC
+    now = utcTz.localize(dt.datetime.now())
+    to_run_list = []
+    
+    # Loop through all objects in config_list
+    for obj in config_list:
+        try:
+            # If task_scheduled is false, the job runs
+            # Otherwise, need to do some time comparisons
+            if obj['task_scheduled'] == False:
+                to_run_list.append(obj)
+            elif obj['task_scheduled'] == True:
+                # If task_scheduled_time has values, parse it
+                if obj['task_scheduled_time'] == '':
+                    print('Couldn''t find any values for task_scheduled_time')
+                    raise Exception()
+                
+                # The following line of code doesn't work even though %Z should handle EST, per
+                # strptime documentation. Hard-coding EST for now.
+                # This might be an issue between Python 3.6 and whatever the online documentation is for
+                # runtime = dt.datetime.strptime(obj['task_scheduled_time'], '%m/%d/%Y %H:%M:%S %Z')
+                
+                runtimeEST = dt.datetime.strptime(obj['task_scheduled_time'], '%m/%d/%Y %H:%M:%S EST')
+                runtimeUTC = utcTz.localize(runtimeEST + dt.timedelta(hours = 5)) # Force it to time aware in UTC
+                
+                # If the start time is before now, then we need to march the time forward
+                while runtimeUTC < now:
+                    runtimeUTC = runtimeUTC + dt.timedelta(seconds = obj['task_interval'])
+                print(runtimeUTC)
+            else:
+                # This shouldn't happen, but put it here just in case
+                print('Error: task_scheduled is neither true nor false')
+                raise Exception()
+        except Exception as error:
+            print('Failed to identify jobs to run (get_jobs_to_run): ' + str(error))
+    
+    return to_run_list
+
+def check_job_runtime(to_run_list, running_list):
+    # Given a list of job configurations and jobs that are already running, make sure
+    # that there are no collisions. i.e. if a job is already running, don't try to kick
+    # it off again.
+    
+    final_run_list = []
+    
+    return final_run_list
+
+def run_jobs(final_run_list):
+    # Dummy function to run some jobs
+    
+    for obj in final_run_list:
+        name = obj['task_name']
+        program = obj['task_location']
+        print('Task ' + task_name + ' at ' + task_location + ' kicked off')
+        
+        # For Windows, I choose to use os.system. Leaving this commented out because
+        # the functions don't actually exist
+        # os.system(program)
 
 def scheduler(CONFIG_FILE = 'config.json'):
     # Given a config.json file (assumed to share the same directory as this file), then
@@ -121,21 +191,27 @@ def scheduler(CONFIG_FILE = 'config.json'):
     config_list = read_config(CONFIG_FILE)
     
     # Check what needs to be run now based on config_list
+    to_run_list = get_jobs_to_run(config_list)
     
     # Check what is already running (from database)
-    running_list = db.check_running()
+    running_list = db.get_running()
     
     # If there is a collision in task name between what is running now and what needs to
     # kick off, don't kick off the new task.
+    final_run_list = check_job_runtime(to_run_list, running_list)
+    
     # Otherwise, kick off the new task
+    run_jobs(final_run_list)
     
     # Insert new jobs into the the database
+    # db.add_task(SOME_DATA)
     
     # Check job status for all jobs previously identified as running. If the job is
     # done or errored out, update it accordingly in the database
     
     # Return variables for debugging purposes
-    return config_list, running_list
+    return config_list, running_list, to_run_list
 
 if __name__ == "__main__":
+    # Run the function. Also fetch output for debug purposes
     output = scheduler()

@@ -29,7 +29,7 @@ class csvDB:
                     if int(row[0]) > self.maxId:
                         self.maxId = int(row[0])
 
-    def check_running(self):
+    def get_running(self):
         # MySQL: SELECT * FROM tasks WHERE status == RUNNING
         # Return a list of tasks with the RUNNING status
         # Returns [] if none found
@@ -57,7 +57,7 @@ class csvDB:
         
         # Append to the file
         with open(self.dbFile, mode='a') as csvFile:
-            insertRow = str(self.maxId) + ',' + newRow + ',RUNNING'
+            insertRow = str(self.maxId) + ',' + newRow + ',RUNNING\r'
             csvFile.write(insertRow)
     
     def update_task(self, updateId = '', newStatus = ''):
@@ -75,10 +75,10 @@ class csvDB:
         # Complete this later once I think through how to modify CSV without copy/pasting
         # the whole thing into memory
 
-# Function here for testing purposes
+# __main__ function block put here for testing purposes
 if __name__ == "__main__":
     testDB = csvDB()
-    output = testDB.check_running()
+    output = testDB.get_running()
     
     newRow = 'Test insert,C:\\file\\path,04/16/2020 06:00:00 EST'
     testDB.add_task(newRow)

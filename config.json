@@ -30,7 +30,7 @@
 			"notes": "testing blank value in task name"
 		},
 		{
-			"task_name": "Test Case",
+			"task_name": "Test Case - blank interval",
 			"task_location": "C:\\Users\\myuser\\important_task.exe",
 			"task_interval": "",
 			"task_scheduled_time": "",
@@ -45,7 +45,7 @@
 			"notes": "Missing task name"
 		},
 		{
-			"task_name": "Test Case",
+			"task_name": "Test Case - non-numeric interval",
 			"task_location": "C:\\Users\\myuser\\important_task.exe",
 			"task_interval": "five hundred",
 			"task_scheduled_time": "",
@@ -53,7 +53,7 @@
 			"notes": "Testing a non numeric task_interval value"
 		},
 		{
-			"task_name": "Test Case",
+			"task_name": "Test Case - invalid true false",
 			"task_location": "C:\\Users\\myuser\\important_task.exe",
 			"task_interval": 2143,
 			"task_scheduled_time": "",
@@ -61,7 +61,7 @@
 			"notes": "Testing invalid true/false"
 		},
 		{
-			"task_name": "Test Case",
+			"task_name": "Test Case - valid true false with weird case",
 			"task_location": "C:\\Users\\myuser\\important_task.exe",
 			"task_interval": 1234,
 			"task_scheduled_time": "",
