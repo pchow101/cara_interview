@@ -1,0 +1,17 @@
+{
+	"task_config": [{
+			"task_name": "Scheduled Task",
+			"task_location": "C:\\Users\\myuser\\scheduled_task.exe",
+			"task_interval": 5000,
+			"task_scheduled_time": "03/16/2020 04:00:00 EST",
+			"task_scheduled": "true"
+		},
+		{
+			"task_name": "Important Task",
+			"task_location": "C:\\Users\\myuser\\important_task.exe",
+			"task_interval": 0,
+			"task_scheduled_time": "",
+			"task_scheduled": "false"
+		}
+	]
+}

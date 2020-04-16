@@ -1,0 +1,99 @@
+
+Take-home code questions:
+
+Pick one of the required languages: C#, Python, Javascript
+
+Pick one of the following questions, upload code to github/gitlab and email a link to justin.s.lindsey@nasa.gov
+Create tests as necessary to validate the code. Timebox to 3 hours and stop past that point. 
+
+
+1. Create a task scheduler that schedules programs to run at a user configurable time.
+
+Acceptance Criteria:
+    * Tasks can be scheduled or ran immiediately
+    * Tasks can be canceled/killed before they have completed execution
+    * Tasks should only execute one instance of the program while it's running
+    * User configurable time can be a time interval (ie. every 5 minutes), or a specific time (03/16/2021 at 4:00PM EST)
+    * An example task can be a simple program that simulates work or execution by waiting
+    * User config should also include the location of the program to run at the scheduled time
+    * Multiple different configured tasks should be able to run simultanouesly
+    * User config is a serialized JSON config read from a file, status of running tasks can be output to console
+    * Task scheduler should accept the following commands:
+        start "TaskName" - starts task based on config, which is either immiediately or scheduled
+        stop "TaskName" - stops task immiediately
+    * Use the location that corresponds to your system, ie. Can limit to either Windows (.exe), Linux (anything with execute bit) or Mac
+
+Example Config:
+config.json
+{
+	"task_config": [{
+			"task_name": "Scheduled Task",
+			"task_location": "C:\\Users\\myuser\\scheduled_task.exe",
+			"task_interval": 5000,
+			"task_scheduled_time": "03/16/2020 04:00:00 EST",
+			"task_scheduled": "true"
+		},
+		{
+			"task_name": "Important Task",
+			"task_location": "C:\\Users\\myuser\\important_task.exe",
+			"task_interval": 0,
+			"task_scheduled_time": "",
+			"task_scheduled": "false"
+		}
+	]
+}
+
+2. Create a key/value parallel file parser
+
+Acceptance Criteria:
+    * Keys and values are stored in a *.kv file with a separator character '=' and a newline separator '\n' or '\r\n'
+    * Create a program to write many (10,000+) example .kv files with any key/value data inside a directory
+    * Find all files in a directory with the extension .kv
+    * Parallel read the files, and parse all of the key/values pairs into a shared dictionary
+    * If there are key name collisions, then append values to a list
+    * Print the shared dictionary to console after reading all of the files
+    * Treat the key names as strict (so 'node' and 'Node' are different)
+    * Optimize for one or more of the following (Looking for explanation of choice/tradeoffs):
+        - memory usage
+        - # of files parsed concurrently
+        - CPU utilization    
+
+Example File Format: test.kv
+Key=Value
+Node=1
+Node         =  2
+OBJECT_ID=145678
+OBJECT_ID              =         123654
+
+3. Create a CRUD frontend with framework of choice (React/Angular/Vue/etc)
+
+Acceptance Criteria:
+    * Given a data model described in JSON, generate inputs to change the JSON
+    * JSON is input into a textbox
+    * Booleans are represented by checkboxes
+    * Integers/Text are represented by textboxes of sufficient length
+    * Lists are represented by a group of appropriate inputs
+    * Objects are represented by subforms containing inputs for each property
+    * Basic validation to prevent empty or null values, or bad input JSON
+    * Utilize material/bootstrap or equivalent UI framework to enhance look and feel of components
+    * Submit button can just generate the changed JSON, and show it below (doesn't need to submit to a server)
+
+Example JSON (Schema can be created at https://jsonschema.net/home)
+{
+    "checked": false,
+    "dimensions": {
+        "width": 5,
+        "height": 10
+    },
+    "id": 1,
+    "name": "A green door",
+    "price": 12.5,
+    "tags": [
+        "home",
+        "green"
+    ]
+}
+
+
+
+
