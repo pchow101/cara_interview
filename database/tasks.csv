@@ -1,0 +1,5 @@
+id,name,location,runtime,status
+1,Initial Task,C:\\Users\\some\\directory,03/16/2020 04:00:00 EST,COMPLETE
+2,Initial Task,C:\\Users\\some\\directory,03/16/2020 04:05:00 EST,ERROR
+3,Initial Task,C:\\Users\\some\\directory,03/16/2020 04:10:00 EST,RUNNING
+4,Test insert,C:\file\path,04/16/2020 06:00:00 EST,RUNNING

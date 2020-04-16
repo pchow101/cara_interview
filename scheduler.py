@@ -2,7 +2,8 @@
 # Philip Chow
 
 import json
-import string
+import database
+import datetime as dt
 
 def read_config(filepath):
     # Parses a task scheduler config file. This assumes the config JSON file is structured
@@ -113,11 +114,28 @@ def scheduler(CONFIG_FILE = 'config.json'):
     # Assumes a default CONFIG_FILE name of 'config.json'. This can be modified by the
     # user when calling the function if so desired
     
+    # Initialize database
+    db = database.csvDB()
+    
     # Get list of configurations
     config_list = read_config(CONFIG_FILE)
-    print('Done')
     
-    return config_list
+    # Check what needs to be run now based on config_list
+    
+    # Check what is already running (from database)
+    running_list = db.check_running()
+    
+    # If there is a collision in task name between what is running now and what needs to
+    # kick off, don't kick off the new task.
+    # Otherwise, kick off the new task
+    
+    # Insert new jobs into the the database
+    
+    # Check job status for all jobs previously identified as running. If the job is
+    # done or errored out, update it accordingly in the database
+    
+    # Return variables for debugging purposes
+    return config_list, running_list
 
 if __name__ == "__main__":
-    config_list = scheduler()
+    output = scheduler()
